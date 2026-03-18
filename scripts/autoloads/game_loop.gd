@@ -1,0 +1,21 @@
+extends Node
+
+@export var tick_time := 1.0
+
+var timer: Timer
+
+func _ready():
+	timer = Timer.new()
+	add_child(timer)
+	timer.wait_time = tick_time
+	timer.autostart = true
+	timer.timeout.connect(_do_tick)
+	timer.start()
+	
+func _simulate(num_ticks: int):
+	for i in num_ticks:
+		_do_tick()
+	
+func _do_tick():
+	var income := TickCalculator.calculate()
+	EventBus.tick_processed.emit({ "change_amount": income })

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ProductDefinition" format=3 uid="uid://d00ms6x5t2s6d"]
+
+[ext_resource type="Script" uid="uid://cepgvmp2tmrkd" path="res://resources/products/product_definition.gd" id="1_gwh22"]
+
+[resource]
+script = ExtResource("1_gwh22")
+id = "candy"
+display_name = "Candy"
+margin = 2.0
+tags = Array[String](["Food", "Junk", "Impulse"])

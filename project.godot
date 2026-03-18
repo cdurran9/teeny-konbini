@@ -1,0 +1,35 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Teeny Konbini"
+run/main_scene="uid://dxt04wa2soaxs"
+config/features=PackedStringArray("4.6", "Forward Plus")
+config/icon="res://icon.svg"
+
+[autoload]
+
+GameLoop="*uid://0n2i1myl4elh"
+EventBus="*uid://cwseujf22k53h"
+GameState="*uid://smsm7mh0mfj8"
+UpgradeRegistry="*uid://do5ap4ey5ggbk"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/product_importer/plugin.cfg")
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
+
+[rendering]
+
+rendering_device/driver.windows="d3d12"
