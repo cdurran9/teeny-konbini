@@ -7,4 +7,3 @@ class_name UpgradeDef
 @export var base_cost: float
 @export var effects: Array[Effect]
 @export var prerequisites: Array[String]
-@export var unlocks_products: Array[String]

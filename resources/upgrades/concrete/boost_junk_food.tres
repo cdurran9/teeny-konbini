@@ -1,18 +1,22 @@
 [gd_resource type="Resource" script_class="UpgradeDef" format=3 uid="uid://gy5c87tbjdak"]
 
-[ext_resource type="Script" uid="uid://cyaf73at5jpkr" path="res://resources/upgrades/effect.gd" id="1_4u5at"]
-[ext_resource type="Script" uid="uid://8fmvern5cbt0" path="res://resources/upgrades/effects/increase_purchase_rate_effect.gd" id="2_5osal"]
-[ext_resource type="Script" uid="uid://y04hnd6jwy3p" path="res://resources/upgrades/upgrade_def.gd" id="2_yfmym"]
+[ext_resource type="Script" uid="uid://cyaf73at5jpkr" path="res://resources/upgrades/effect.gd" id="1_cf2ev"]
+[ext_resource type="Script" uid="uid://dbpqscec1vu4l" path="res://resources/upgrades/effects/increase_margin_effect.gd" id="2_cf2ev"]
+[ext_resource type="Script" uid="uid://y04hnd6jwy3p" path="res://resources/upgrades/upgrade_def.gd" id="3_j7q5j"]
 
-[sub_resource type="Resource" id="Resource_b73ex"]
-script = ExtResource("2_5osal")
-metadata/_custom_type_script = "uid://8fmvern5cbt0"
+[sub_resource type="Resource" id="Resource_2jjkh"]
+script = ExtResource("2_cf2ev")
+product_tags = Dictionary[String, float]({
+"Junk": 0.2
+})
+metadata/_custom_type_script = "uid://dbpqscec1vu4l"
 
 [resource]
-script = ExtResource("2_yfmym")
+script = ExtResource("3_j7q5j")
 id = "boostJunkFood"
 display_name = "Manipulative Marketing"
 description = "Boosts purchase rate of all junk foods"
 base_cost = 100.0
-effects = Array[ExtResource("1_4u5at")]([SubResource("Resource_b73ex")])
+effects = Array[ExtResource("1_cf2ev")]([SubResource("Resource_2jjkh")])
+prerequisites = Array[String](["unlock_candy", "unlock_soda"])
 metadata/_custom_type_script = "uid://y04hnd6jwy3p"

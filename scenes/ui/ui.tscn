@@ -14,28 +14,16 @@ size_flags_vertical = 3
 script = ExtResource("1_u7n8c")
 
 [node name="Label" type="Label" parent="." unique_id=795768010]
-layout_mode = 0
-offset_left = 493.0
-offset_right = 658.0
+layout_mode = 1
+offset_left = 981.0
+offset_right = 1146.0
 offset_bottom = 40.0
-grow_horizontal = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 29
 text = "000,000,000"
-metadata/_edit_use_anchors_ = true
+horizontal_alignment = 2
 
-[node name="Button_Candy" type="Button" parent="." unique_id=875057217]
+[node name="ButtonsHorizontal" type="HBoxContainer" parent="." unique_id=2080253070]
 layout_mode = 0
-offset_left = 647.0
-offset_top = 133.0
-offset_right = 704.0
-offset_bottom = 164.0
-text = "Candy"
-
-[node name="Button_Soda" type="Button" parent="." unique_id=1251097824]
-layout_mode = 0
-offset_left = 295.0
-offset_top = 133.0
-offset_right = 352.0
-offset_bottom = 164.0
-text = "Soda"
+offset_right = 40.0
+offset_bottom = 40.0

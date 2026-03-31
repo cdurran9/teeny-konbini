@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="UpgradeDef" format=3 uid="uid://bdlk7x5plo3b8"]
+
+[ext_resource type="Script" uid="uid://cyaf73at5jpkr" path="res://resources/upgrades/effect.gd" id="1_mkfr7"]
+[ext_resource type="Script" uid="uid://c72be11erwf43" path="res://resources/upgrades/effects/unlock_products.gd" id="2_5bi4b"]
+[ext_resource type="Script" uid="uid://y04hnd6jwy3p" path="res://resources/upgrades/upgrade_def.gd" id="2_35c6l"]
+
+[sub_resource type="Resource" id="Resource_ic8sq"]
+script = ExtResource("2_5bi4b")
+products = Array[String](["soda"])
+metadata/_custom_type_script = "uid://c72be11erwf43"
+
+[resource]
+script = ExtResource("2_35c6l")
+id = "unlock_soda"
+display_name = "Soda Fountain"
+description = "Unlocks soda fountains at your store"
+base_cost = 50.0
+effects = Array[ExtResource("1_mkfr7")]([SubResource("Resource_ic8sq")])
+metadata/_custom_type_script = "uid://y04hnd6jwy3p"

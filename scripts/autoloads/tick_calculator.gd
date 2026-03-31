@@ -11,7 +11,7 @@ static func calculate() -> float:
 	return compute_income(context)
 	
 static func compute_income(context: TickContext):
-	var income := 0
+	var income := 0.0
 	for store in GameState.current_shops_count:
 		for product in GameState.owned_products:
 			var def: ProductDefinition = UpgradeRegistry._products[product]
@@ -21,10 +21,3 @@ static func compute_income(context: TickContext):
 					product_income *= context.margins[tag] if context.margins[tag] >= 1 else 1
 			income += product_income
 	return income
-
-#var income = _base_income
-	#for upgrade_id in state.owned_upgrades:
-		#var def = UpgradeRegistry.get(upgrade_id)
-		#for effect in def.effects:
-			#income = effect.apply(income, state)
-	#return { "income": income }
