@@ -1,14 +1,14 @@
 [
   {
-    "id": "soda",
-    "display_name": "Soda",
-    "margin": 2,
-    "tags": ["Drink", "Junk"]
+	"id": "soda",
+	"display_name": "Soda",
+	"base_price": 2,
+	"tags": ["Drink", "Junk"]
   },
   {
-    "id": "candy",
-    "display_name": "Candy",
-    "margin": 2,
-    "tags": ["Food", "Junk", "Impulse"]
+	"id": "candy",
+	"display_name": "Candy",
+	"base_price": 2,
+	"tags": ["Food", "Junk", "Impulse"]
   }
 ]

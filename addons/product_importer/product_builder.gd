@@ -42,7 +42,7 @@ func run() -> void:
 		# Apply all fields
 		product.id           = entry.get("id", "")
 		product.display_name = entry.get("display_name", "")
-		product.margin       = float(entry.get("margin", 0))
+		product.base_price   = float(entry.get("base_price", 0))
 		product.tags         = Array(entry.get("tags", []), TYPE_STRING, "", null)
 
 		var save_err := ResourceSaver.save(product, res_path)

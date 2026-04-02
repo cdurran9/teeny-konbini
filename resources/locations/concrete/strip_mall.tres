@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LocationDef" format=3 uid="uid://b0g3m4ppkwsqx"]
+
+[ext_resource type="Script" uid="uid://dwu12uhsegfo6" path="res://resources/locations/location_def.gd" id="1_strip_mall"]
+
+[resource]
+script = ExtResource("1_strip_mall")
+id = "strip_mall"
+display_name = "Strip Mall"
+archetype_distribution = Dictionary[String, float]({
+"college_student": 0.3,
+"commuter": 0.4,
+"local_regular": 0.3
+})

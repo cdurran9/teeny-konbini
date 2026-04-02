@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="CustomerArchetype" format=3 uid="uid://dbtt0hcbh4rs8"]
+
+[ext_resource type="Script" uid="uid://bejlg5b7cakcl" path="res://resources/customers/customer_archetype.gd" id="1_college_student"]
+
+[resource]
+script = ExtResource("1_college_student")
+id = "college_student"
+display_name = "College Student"
+dwell_time = 0.7
+price_sensitivity = 0.7
+product_affinities = Array[String](["Food", "Drink", "Junk"])
+loyalty_weight = 0.6
+visit_frequency = 3.0

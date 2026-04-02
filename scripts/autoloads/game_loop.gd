@@ -17,5 +17,5 @@ func _simulate(num_ticks: int):
 		_do_tick()
 	
 func _do_tick():
-	var income := TickCalculator.calculate()
-	EventBus.tick_processed.emit({ "change_amount": income })
+	var tick: Dictionary = TickCalculator.calculate()
+	EventBus.tick_processed.emit(tick)

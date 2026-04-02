@@ -1,23 +1,52 @@
 class_name TickCalculator
 
-static func calculate() -> float:
-	var context = TickContext.new()
-	context.owned_upgrades = GameState.owned_upgrades
-	
-	for upgrade in GameState.owned_upgrades:
-		var def: UpgradeDef = UpgradeRegistry._upgrades[upgrade]
-		for effect in def.effects:
-			effect.apply(context)
-	return compute_income(context)
-	
-static func compute_income(context: TickContext):
-	var income := 0.0
-	for store in GameState.current_shops_count:
-		for product in GameState.owned_products:
-			var def: ProductDefinition = UpgradeRegistry._products[product]
-			var product_income = def.margin
-			for tag in def.tags:
-				if context.margins.has(tag):
-					product_income *= context.margins[tag] if context.margins[tag] >= 1 else 1
-			income += product_income
-	return income
+static func calculate() -> Dictionary:
+	var total_income := 0.0
+	var total_rep_gain := 0.0
+
+	for store in GameState.owned_stores:
+		var location: LocationDef = UpgradeRegistry._locations.get(store.location_id)
+		if not location:
+			push_warning("TickCalculator: unknown location_id '%s', skipping store" % store.location_id)
+			continue
+
+		var context := TickContext.new()
+		context.owned_upgrades = GameState.owned_upgrades
+		context.shelf_organization = location.base_shelf_organization
+
+		for upgrade_id in GameState.owned_upgrades:
+			var def: UpgradeDef = UpgradeRegistry._upgrades[upgrade_id]
+			for effect in def.effects:
+				effect.apply(context)
+
+		for archetype_id in location.archetype_distribution:
+			var weight: float = location.archetype_distribution[archetype_id]
+			var archetype: CustomerArchetype = UpgradeRegistry._archetypes.get(archetype_id)
+			if not archetype:
+				push_warning("TickCalculator: unknown archetype_id '%s', skipping" % archetype_id)
+				continue
+
+			var traffic: float = archetype.visit_frequency * weight * store.local_reputation
+
+			for product_id in GameState.owned_products:
+				var product: ProductDefinition = UpgradeRegistry._products[product_id]
+				var has_affinity := false
+				for tag in product.tags:
+					if archetype.product_affinities.has(tag):
+						has_affinity = true
+						break
+				if not has_affinity:
+					continue
+
+				var rev := product.base_price
+				rev *= (1.0 - archetype.price_sensitivity * context.price_modifier)
+				rev *= traffic
+				rev *= context.shelf_organization
+				for tag in product.tags:
+					if context.margins.has(tag):
+						rev *= context.margins[tag]
+				total_income += rev
+
+			total_rep_gain += archetype.loyalty_weight * weight * traffic * context.cleanliness
+
+	return {"income": total_income, "reputation_gain": total_rep_gain}

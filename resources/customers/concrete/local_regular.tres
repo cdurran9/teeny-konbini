@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="CustomerArchetype" format=3]
+
+[ext_resource type="Script" path="res://resources/customers/customer_archetype.gd" id="1_local_regular"]
+
+[resource]
+script = ExtResource("1_local_regular")
+id = "local_regular"
+display_name = "Local Regular"
+dwell_time = 0.8
+price_sensitivity = 0.3
+product_affinities = Array[String](["Food", "Drink", "Junk", "Impulse"])
+loyalty_weight = 1.0
+visit_frequency = 2.0
