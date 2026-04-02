@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="BrandIdentityDef" format=3]
+
+[ext_resource type="Script" path="res://resources/upgrades/effect.gd" id="1_effect"]
+[ext_resource type="Script" path="res://resources/upgrades/effects/modify_context_stat_effect.gd" id="2_modstat"]
+[ext_resource type="Script" path="res://resources/brand/brand_identity_def.gd" id="3_branddef"]
+
+[sub_resource type="Resource" id="Resource_clean"]
+script = ExtResource("2_modstat")
+stat_name = "cleanliness"
+multiplier = 1.3
+
+[sub_resource type="Resource" id="Resource_shelf"]
+script = ExtResource("2_modstat")
+stat_name = "shelf_organization"
+multiplier = 1.2
+
+[resource]
+script = ExtResource("3_branddef")
+id = "neighborhood_staple"
+display_name = "Neighborhood Staple"
+description = "A trusted local store. Loyal customers and a tidy reputation."
+passive_effects = Array[ExtResource("1_effect")]([SubResource("Resource_clean"), SubResource("Resource_shelf")])

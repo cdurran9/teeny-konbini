@@ -4,18 +4,21 @@ var _upgrades: Dictionary = {}
 var _products: Dictionary = {}
 var _archetypes: Dictionary = {}
 var _locations: Dictionary = {}
+var _brands: Dictionary = {}
 var _dependents: Dictionary = {}
 
 const UPGRADE_DIR = "res://resources/upgrades/concrete/"
 const PRODUCT_DIR = "res://resources/products/concrete/"
 const ARCHETYPE_DIR = "res://resources/customers/concrete/"
 const LOCATION_DIR = "res://resources/locations/concrete/"
+const BRAND_DIR = "res://resources/brand/concrete/"
 
 func _ready():
 	_load_all()
 	_load_all_products()
 	_load_all_archetypes()
 	_load_all_locations()
+	_load_all_brands()
 
 func _load_all():
 	var dir = DirAccess.open(UPGRADE_DIR)
@@ -104,6 +107,28 @@ func _load_all_locations():
 		filename = dir.get_next()
 	dir.list_dir_end()
 	print("Upgrade registry: loaded %d locations" % _locations.size())
+
+func _load_all_brands():
+	var dir = DirAccess.open(BRAND_DIR)
+	if not dir:
+		push_error("Upgrade registry: could not load %s" % BRAND_DIR)
+		return
+	dir.list_dir_begin()
+	var filename := dir.get_next()
+	while filename != "":
+		if not dir.current_is_dir() and filename.ends_with(".tres"):
+			var path := BRAND_DIR + filename
+			var res := ResourceLoader.load(path, "BrandIdentityDef")
+			if res is BrandIdentityDef:
+				if _brands.has(res.id):
+					push_warning("Upgrade registry: duplicate brand ID found (%s)" % res.id)
+				else:
+					_brands[res.id] = res
+			else:
+				push_warning("UpgradeRegistry: skipping %s, not a BrandIdentityDef" % path)
+		filename = dir.get_next()
+	dir.list_dir_end()
+	print("Upgrade registry: loaded %d brands" % _brands.size())
 
 func _build_independent_index():
 	for id in _upgrades:

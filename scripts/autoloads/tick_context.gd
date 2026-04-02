@@ -9,6 +9,7 @@ var shelf_organization: float = 1.0
 var price_modifier: float = 1.0
 var cleanliness: float = 1.0
 var staff_friendliness_modifier: float = 1.0
+var traffic_multiplier: float = 1.0
 
 func multiply_margin(category: String, factor: float):
 	var current_value = margins.get(category) if margins.get(category) != null else 1

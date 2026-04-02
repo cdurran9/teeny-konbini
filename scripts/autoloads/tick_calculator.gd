@@ -14,6 +14,14 @@ static func calculate() -> Dictionary:
 		context.owned_upgrades = GameState.owned_upgrades
 		context.shelf_organization = location.base_shelf_organization
 
+		# apply brand identity passive effects first
+		if GameState.brand_identity_id != "":
+			var brand: BrandIdentityDef = UpgradeRegistry._brands.get(GameState.brand_identity_id)
+			if brand:
+				for effect in brand.passive_effects:
+					effect.apply(context)
+
+		# then apply upgrade effects on top
 		for upgrade_id in GameState.owned_upgrades:
 			var def: UpgradeDef = UpgradeRegistry._upgrades[upgrade_id]
 			for effect in def.effects:
@@ -26,7 +34,7 @@ static func calculate() -> Dictionary:
 				push_warning("TickCalculator: unknown archetype_id '%s', skipping" % archetype_id)
 				continue
 
-			var traffic: float = archetype.visit_frequency * weight * store.local_reputation
+			var traffic: float = archetype.visit_frequency * weight * store.local_reputation * context.traffic_multiplier
 
 			for product_id in GameState.owned_products:
 				var product: ProductDefinition = UpgradeRegistry._products[product_id]

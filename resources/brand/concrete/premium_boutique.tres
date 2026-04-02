@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="BrandIdentityDef" format=3]
+
+[ext_resource type="Script" path="res://resources/upgrades/effect.gd" id="1_effect"]
+[ext_resource type="Script" path="res://resources/upgrades/effects/modify_context_stat_effect.gd" id="2_modstat"]
+[ext_resource type="Script" path="res://resources/brand/brand_identity_def.gd" id="3_branddef"]
+
+[sub_resource type="Resource" id="Resource_price"]
+script = ExtResource("2_modstat")
+stat_name = "price_modifier"
+multiplier = 0.3
+
+[sub_resource type="Resource" id="Resource_traffic"]
+script = ExtResource("2_modstat")
+stat_name = "traffic_multiplier"
+multiplier = 0.6
+
+[resource]
+script = ExtResource("3_branddef")
+id = "premium_boutique"
+display_name = "Premium Boutique"
+description = "Fewer customers, but each one spends significantly more."
+passive_effects = Array[ExtResource("1_effect")]([SubResource("Resource_price"), SubResource("Resource_traffic")])

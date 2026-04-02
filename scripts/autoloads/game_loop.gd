@@ -8,14 +8,17 @@ func _ready():
 	timer = Timer.new()
 	add_child(timer)
 	timer.wait_time = tick_time
-	timer.autostart = true
+	timer.autostart = false
 	timer.timeout.connect(_do_tick)
+	EventBus.brand_chosen.connect(_on_brand_chosen)
+
+func _on_brand_chosen(_brand_id: String):
 	timer.start()
-	
+
 func _simulate(num_ticks: int):
 	for i in num_ticks:
 		_do_tick()
-	
+
 func _do_tick():
 	var tick: Dictionary = TickCalculator.calculate()
 	EventBus.tick_processed.emit(tick)

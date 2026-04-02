@@ -4,6 +4,7 @@ extends Node
 
 var current_money := 0.0
 var brand_reputation := 0.0
+var brand_identity_id: String = ""
 # Each entry: { "location_id": String, "local_reputation": float }
 var owned_stores: Array[Dictionary] = []
 var owned_upgrades: Array[String] = []
