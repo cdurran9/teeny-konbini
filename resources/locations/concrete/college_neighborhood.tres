@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="LocationDef" format=3]
+
+[ext_resource type="Script" path="res://resources/locations/location_def.gd" id="1_college_neighborhood"]
+
+[resource]
+script = ExtResource("1_college_neighborhood")
+id = "college_neighborhood"
+display_name = "College Neighborhood"
+archetype_distribution = Dictionary[String, float]({
+"college_student": 0.65,
+"local_regular": 0.25,
+"commuter": 0.1
+})
+base_shelf_organization = 1.0
+base_dwell_modifier = 1.3
+reputation_requirement = 25.0
