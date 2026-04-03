@@ -3,13 +3,17 @@ extends Control
 @onready var reputation_label = $ReputationLabel
 @onready var buttons_horizontal = $ButtonsHorizontal
 @onready var locations_container = $LocationsContainer
+@onready var staff_container = $StaffContainer
 
 func _ready():
 	EventBus.money_changed.connect(update_score)
 	EventBus.reputation_changed.connect(update_reputation)
 	EventBus.store_opened.connect(_on_store_opened)
+	EventBus.staff_hired.connect(_on_staff_changed)
+	EventBus.staff_quit.connect(_on_staff_changed)
 	build_buttons_display()
 	build_locations_display()
+	build_staff_display()
 	update_score(GameState.current_money)
 	update_reputation(GameState.brand_reputation)
 
@@ -75,3 +79,55 @@ func _on_store_opened(_location_id: String):
 	for child in locations_container.get_children():
 		child.queue_free()
 	build_locations_display()
+
+func _on_staff_changed(_staff: Dictionary):
+	build_staff_display()
+
+func build_staff_display():
+	for child in staff_container.get_children():
+		child.queue_free()
+
+	var pool_label := Label.new()
+	pool_label.text = "--- Hiring Pool ---"
+	staff_container.add_child(pool_label)
+
+	for i in range(StaffManager.hiring_pool.size()):
+		var staff: Dictionary = StaffManager.hiring_pool[i]
+		var traits_str := ", ".join(PackedStringArray(staff["traits"]))
+		var btn := Button.new()
+		btn.text = "Hire %s [%s]" % [staff["display_name"], traits_str]
+		var idx := i
+		btn.pressed.connect(func():
+			StaffManager.hire(idx)
+			build_staff_display()
+		)
+		staff_container.add_child(btn)
+
+	var hired_label := Label.new()
+	hired_label.text = "--- Hired Staff ---"
+	staff_container.add_child(hired_label)
+
+	if GameState.hired_staff.is_empty():
+		var none_label := Label.new()
+		none_label.text = "(none)"
+		staff_container.add_child(none_label)
+		return
+
+	for staff in GameState.hired_staff:
+		var traits_str := ", ".join(PackedStringArray(staff["traits"]))
+		var morale_pct := int(staff["morale"] * 100)
+		var store_info := "Unassigned" if staff["assigned_store_idx"] < 0 else "Store %d" % staff["assigned_store_idx"]
+		var lbl := Label.new()
+		lbl.text = "%s [%s] — %s | Morale: %d%%" % [staff["display_name"], traits_str, store_info, morale_pct]
+		staff_container.add_child(lbl)
+
+		for store_idx in range(GameState.owned_stores.size()):
+			var loc_id: String = GameState.owned_stores[store_idx]["location_id"]
+			var assign_btn := Button.new()
+			assign_btn.text = "  → Store %d (%s)" % [store_idx, loc_id]
+			var sid: String = staff["id"]
+			assign_btn.pressed.connect(func():
+				StaffManager.assign(sid, store_idx)
+				build_staff_display()
+			)
+			staff_container.add_child(assign_btn)

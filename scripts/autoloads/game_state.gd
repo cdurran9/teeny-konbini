@@ -9,6 +9,7 @@ var brand_identity_id: String = ""
 var owned_stores: Array[Dictionary] = []
 var owned_upgrades: Array[String] = []
 var owned_products: Array[String] = []
+var hired_staff: Array[Dictionary] = []
 
 func _ready():
 	current_money = starting_money

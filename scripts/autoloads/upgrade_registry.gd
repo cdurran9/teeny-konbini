@@ -5,6 +5,7 @@ var _products: Dictionary = {}
 var _archetypes: Dictionary = {}
 var _locations: Dictionary = {}
 var _brands: Dictionary = {}
+var _staff_traits: Dictionary = {}
 var _dependents: Dictionary = {}
 
 const UPGRADE_DIR = "res://resources/upgrades/concrete/"
@@ -12,6 +13,7 @@ const PRODUCT_DIR = "res://resources/products/concrete/"
 const ARCHETYPE_DIR = "res://resources/customers/concrete/"
 const LOCATION_DIR = "res://resources/locations/concrete/"
 const BRAND_DIR = "res://resources/brand/concrete/"
+const STAFF_TRAIT_DIR = "res://resources/staff/concrete/"
 
 func _ready():
 	_load_all()
@@ -19,6 +21,7 @@ func _ready():
 	_load_all_archetypes()
 	_load_all_locations()
 	_load_all_brands()
+	_load_all_staff_traits()
 
 func _load_all():
 	var dir = DirAccess.open(UPGRADE_DIR)
@@ -129,6 +132,28 @@ func _load_all_brands():
 		filename = dir.get_next()
 	dir.list_dir_end()
 	print("Upgrade registry: loaded %d brands" % _brands.size())
+
+func _load_all_staff_traits():
+	var dir = DirAccess.open(STAFF_TRAIT_DIR)
+	if not dir:
+		push_error("Upgrade registry: could not load %s" % STAFF_TRAIT_DIR)
+		return
+	dir.list_dir_begin()
+	var filename := dir.get_next()
+	while filename != "":
+		if not dir.current_is_dir() and filename.ends_with(".tres"):
+			var path := STAFF_TRAIT_DIR + filename
+			var res := ResourceLoader.load(path, "StaffDef")
+			if res is StaffDef:
+				if _staff_traits.has(res.id):
+					push_warning("Upgrade registry: duplicate staff trait ID found (%s)" % res.id)
+				else:
+					_staff_traits[res.id] = res
+			else:
+				push_warning("UpgradeRegistry: skipping %s, not a StaffDef" % path)
+		filename = dir.get_next()
+	dir.list_dir_end()
+	print("Upgrade registry: loaded %d staff traits" % _staff_traits.size())
 
 func _build_independent_index():
 	for id in _upgrades:

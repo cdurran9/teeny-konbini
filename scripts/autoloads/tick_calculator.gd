@@ -4,7 +4,8 @@ static func calculate() -> Dictionary:
 	var total_income := 0.0
 	var total_rep_gain := 0.0
 
-	for store in GameState.owned_stores:
+	for store_idx in range(GameState.owned_stores.size()):
+		var store: Dictionary = GameState.owned_stores[store_idx]
 		var location: LocationDef = UpgradeRegistry._locations.get(store.location_id)
 		if not location:
 			push_warning("TickCalculator: unknown location_id '%s', skipping store" % store.location_id)
@@ -20,6 +21,16 @@ static func calculate() -> Dictionary:
 			if brand:
 				for effect in brand.passive_effects:
 					effect.apply(context)
+
+		# apply staff trait effects for this store
+		for staff in GameState.hired_staff:
+			if staff["assigned_store_idx"] != store_idx:
+				continue
+			for trait_id in staff["traits"]:
+				var trait_def: StaffDef = UpgradeRegistry._staff_traits.get(trait_id)
+				if trait_def:
+					for effect in trait_def.effects:
+						effect.apply(context)
 
 		# then apply upgrade effects on top
 		for upgrade_id in GameState.owned_upgrades:

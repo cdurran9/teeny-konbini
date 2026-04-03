@@ -44,3 +44,10 @@ layout_mode = 0
 offset_top = 300.0
 offset_right = 300.0
 offset_bottom = 600.0
+
+[node name="StaffContainer" type="VBoxContainer" parent="." unique_id=444555666]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 300.0
+offset_right = 640.0
+offset_bottom = 700.0

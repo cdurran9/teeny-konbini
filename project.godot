@@ -21,6 +21,7 @@ GameLoop="*uid://0n2i1myl4elh"
 EventBus="*uid://cwseujf22k53h"
 GameState="*uid://smsm7mh0mfj8"
 UpgradeRegistry="*uid://do5ap4ey5ggbk"
+StaffManager="*res://scripts/autoloads/staff_manager.gd"
 
 [editor_plugins]
 
