@@ -13,6 +13,13 @@ var pending_choices: Array[Dictionary] = []
 
 func _ready():
 	EventBus.tick_processed.connect(_on_tick)
+	EventBus.prestige_completed.connect(_on_prestige_completed)
+
+func _on_prestige_completed():
+	is_researching = false
+	ticks_remaining = 0
+	pity_counter = 0
+	pending_choices.clear()
 
 func start_research() -> bool:
 	if is_researching or not pending_choices.is_empty():

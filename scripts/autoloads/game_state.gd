@@ -1,5 +1,9 @@
 extends Node
 
+const SAVE_PATH := "user://prestige.cfg"
+const PRESTIGE_STORE_THRESHOLD := 3
+const PRESTIGE_REP_THRESHOLD := 50.0
+
 @export var starting_money := 0.0
 
 var current_money := 0.0
@@ -11,8 +15,12 @@ var owned_upgrades: Array[String] = []
 var owned_products: Array[String] = []
 var hired_staff: Array[Dictionary] = []
 var product_upgrades: Dictionary = {}
+var legacy_points: int = 0
+
+var _prestige_signaled := false
 
 func _ready():
+	_load_legacy_points()
 	current_money = starting_money
 	owned_stores = [{ "location_id": "strip_mall", "local_reputation": 1.0 }]
 	EventBus.tick_processed.connect(_apply_tick)
@@ -22,6 +30,12 @@ func _apply_tick(tick: Dictionary):
 	brand_reputation += tick.reputation_gain
 	EventBus.money_changed.emit(current_money)
 	EventBus.reputation_changed.emit(brand_reputation)
+	if not _prestige_signaled and _prestige_threshold_met():
+		_prestige_signaled = true
+		EventBus.prestige_available.emit()
+
+func _prestige_threshold_met() -> bool:
+	return owned_stores.size() >= PRESTIGE_STORE_THRESHOLD and brand_reputation >= PRESTIGE_REP_THRESHOLD
 
 func purchase_upgrade(id: String):
 	var def: UpgradeDef = UpgradeRegistry._upgrades.get(id)
@@ -46,3 +60,28 @@ func open_store(location_id: String):
 			return
 	owned_stores.append({ "location_id": location_id, "local_reputation": 1.0 })
 	EventBus.store_opened.emit(location_id)
+
+func prestige():
+	legacy_points += 1
+	_save_legacy_points()
+	current_money = starting_money
+	brand_reputation = 0.0
+	brand_identity_id = ""
+	owned_stores = [{ "location_id": "strip_mall", "local_reputation": 1.0 }]
+	owned_upgrades = []
+	owned_products = []
+	hired_staff = []
+	product_upgrades = {}
+	_prestige_signaled = false
+	EventBus.prestige_completed.emit()
+	get_tree().reload_current_scene()
+
+func _load_legacy_points():
+	var cfg := ConfigFile.new()
+	if cfg.load(SAVE_PATH) == OK:
+		legacy_points = cfg.get_value("prestige", "legacy_points", 0)
+
+func _save_legacy_points():
+	var cfg := ConfigFile.new()
+	cfg.set_value("prestige", "legacy_points", legacy_points)
+	cfg.save(SAVE_PATH)

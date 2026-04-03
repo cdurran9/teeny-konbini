@@ -11,3 +11,5 @@ signal staff_quit(staff_data: Dictionary)
 signal research_completed(choices: Array)
 signal event_triggered(event_def)
 signal event_resolved(choice)
+signal prestige_available
+signal prestige_completed

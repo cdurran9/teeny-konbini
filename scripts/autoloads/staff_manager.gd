@@ -14,6 +14,11 @@ var hiring_pool: Array[Dictionary] = []
 
 func _ready():
 	EventBus.tick_processed.connect(_on_tick)
+	EventBus.prestige_completed.connect(_on_prestige_completed)
+	_replenish_pool()
+
+func _on_prestige_completed():
+	hiring_pool.clear()
 	_replenish_pool()
 
 func _on_tick(_tick: Dictionary):

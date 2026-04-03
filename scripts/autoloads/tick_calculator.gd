@@ -15,6 +15,12 @@ static func calculate() -> Dictionary:
 		context.owned_upgrades = GameState.owned_upgrades
 		context.shelf_organization = location.base_shelf_organization
 
+		# apply legacy bonuses (persist across runs)
+		for bonus in UpgradeRegistry._legacy_bonuses.values():
+			if GameState.legacy_points >= bonus.required_legacy_points:
+				for effect in bonus.effects:
+					effect.apply(context)
+
 		# apply brand identity passive effects first
 		if GameState.brand_identity_id != "":
 			var brand: BrandIdentityDef = UpgradeRegistry._brands.get(GameState.brand_identity_id)

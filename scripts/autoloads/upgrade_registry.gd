@@ -6,6 +6,7 @@ var _archetypes: Dictionary = {}
 var _locations: Dictionary = {}
 var _brands: Dictionary = {}
 var _staff_traits: Dictionary = {}
+var _legacy_bonuses: Dictionary = {}
 var _dependents: Dictionary = {}
 
 const UPGRADE_DIR = "res://resources/upgrades/concrete/"
@@ -14,6 +15,7 @@ const ARCHETYPE_DIR = "res://resources/customers/concrete/"
 const LOCATION_DIR = "res://resources/locations/concrete/"
 const BRAND_DIR = "res://resources/brand/concrete/"
 const STAFF_TRAIT_DIR = "res://resources/staff/concrete/"
+const LEGACY_BONUS_DIR = "res://resources/prestige/concrete/"
 
 func _ready():
 	_load_all()
@@ -22,6 +24,7 @@ func _ready():
 	_load_all_locations()
 	_load_all_brands()
 	_load_all_staff_traits()
+	_load_all_legacy_bonuses()
 
 func _load_all():
 	var dir = DirAccess.open(UPGRADE_DIR)
@@ -154,6 +157,28 @@ func _load_all_staff_traits():
 		filename = dir.get_next()
 	dir.list_dir_end()
 	print("Upgrade registry: loaded %d staff traits" % _staff_traits.size())
+
+func _load_all_legacy_bonuses():
+	var dir = DirAccess.open(LEGACY_BONUS_DIR)
+	if not dir:
+		push_error("Upgrade registry: could not load %s" % LEGACY_BONUS_DIR)
+		return
+	dir.list_dir_begin()
+	var filename := dir.get_next()
+	while filename != "":
+		if not dir.current_is_dir() and filename.ends_with(".tres"):
+			var path := LEGACY_BONUS_DIR + filename
+			var res := ResourceLoader.load(path, "LegacyBonusDef")
+			if res is LegacyBonusDef:
+				if _legacy_bonuses.has(res.id):
+					push_warning("Upgrade registry: duplicate legacy bonus ID found (%s)" % res.id)
+				else:
+					_legacy_bonuses[res.id] = res
+			else:
+				push_warning("UpgradeRegistry: skipping %s, not a LegacyBonusDef" % path)
+		filename = dir.get_next()
+	dir.list_dir_end()
+	print("Upgrade registry: loaded %d legacy bonuses" % _legacy_bonuses.size())
 
 func _build_independent_index():
 	for id in _upgrades:

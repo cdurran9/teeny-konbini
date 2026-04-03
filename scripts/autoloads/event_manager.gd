@@ -11,7 +11,13 @@ var _pending_event = null  # EventDef awaiting player resolution
 
 func _ready():
 	EventBus.tick_processed.connect(_on_tick)
+	EventBus.prestige_completed.connect(_on_prestige_completed)
 	_load_events()
+	_schedule_next_event()
+
+func _on_prestige_completed():
+	_active_modifiers.clear()
+	_pending_event = null
 	_schedule_next_event()
 
 func _load_events():
