@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ProductDefinition" format=3 uid="uid://d3zsow5pbr0e"]
+
+[ext_resource type="Script" uid="uid://cepgvmp2tmrkd" path="res://resources/products/product_definition.gd" id="1_energy"]
+
+[resource]
+script = ExtResource("1_energy")
+id = "energy_drink"
+display_name = "Energy Drink"
+base_price = 4.0
+tags = Array[String](["Drink", "Junk"])

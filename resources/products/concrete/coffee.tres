@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ProductDefinition" format=3 uid="uid://b1xqmw3nzp8c"]
+
+[ext_resource type="Script" uid="uid://cepgvmp2tmrkd" path="res://resources/products/product_definition.gd" id="1_coffee"]
+
+[resource]
+script = ExtResource("1_coffee")
+id = "coffee"
+display_name = "Coffee"
+base_price = 3.5
+tags = Array[String](["Drink", "Hot"])

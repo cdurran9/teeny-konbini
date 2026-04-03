@@ -57,7 +57,8 @@ static func calculate() -> Dictionary:
 				if not has_affinity:
 					continue
 
-				var rev := product.base_price
+				var upgrade_level: int = GameState.product_upgrades.get(product_id, 0)
+				var rev := product.base_price * (1.0 + upgrade_level * 0.2)
 				rev *= (1.0 - archetype.price_sensitivity * context.price_modifier)
 				rev *= traffic
 				rev *= context.shelf_organization

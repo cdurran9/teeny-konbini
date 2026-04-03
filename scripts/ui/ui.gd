@@ -4,6 +4,7 @@ extends Control
 @onready var buttons_horizontal = $ButtonsHorizontal
 @onready var locations_container = $LocationsContainer
 @onready var staff_container = $StaffContainer
+@onready var rd_container = $RdContainer
 
 func _ready():
 	EventBus.money_changed.connect(update_score)
@@ -11,9 +12,12 @@ func _ready():
 	EventBus.store_opened.connect(_on_store_opened)
 	EventBus.staff_hired.connect(_on_staff_changed)
 	EventBus.staff_quit.connect(_on_staff_changed)
+	EventBus.tick_processed.connect(_on_tick_for_rd)
+	EventBus.research_completed.connect(_on_research_completed)
 	build_buttons_display()
 	build_locations_display()
 	build_staff_display()
+	build_rd_display()
 	update_score(GameState.current_money)
 	update_reputation(GameState.brand_reputation)
 
@@ -131,3 +135,52 @@ func build_staff_display():
 				build_staff_display()
 			)
 			staff_container.add_child(assign_btn)
+
+func _on_tick_for_rd(_tick: Dictionary):
+	if RdManager.is_researching:
+		build_rd_display()
+
+func _on_research_completed(_choices: Array):
+	build_rd_display()
+
+func build_rd_display():
+	for child in rd_container.get_children():
+		child.queue_free()
+
+	var header := Label.new()
+	header.text = "--- R&D Lab ---"
+	rd_container.add_child(header)
+
+	if not RdManager.pending_choices.is_empty():
+		var prompt := Label.new()
+		prompt.text = "Research complete! Choose one:"
+		rd_container.add_child(prompt)
+		for choice in RdManager.pending_choices:
+			var btn := Button.new()
+			btn.text = choice["display_name"]
+			var c: Dictionary = choice
+			btn.pressed.connect(func():
+				RdManager.choose(c)
+				build_rd_display()
+			)
+			rd_container.add_child(btn)
+		return
+
+	if RdManager.is_researching:
+		var status := Label.new()
+		status.text = "Researching... (%d ticks left)" % RdManager.ticks_remaining
+		rd_container.add_child(status)
+	else:
+		var start_btn := Button.new()
+		start_btn.text = "Start Research ($%.0f)" % RdManager.RESEARCH_COST
+		start_btn.disabled = GameState.current_money < RdManager.RESEARCH_COST
+		start_btn.pressed.connect(func():
+			RdManager.start_research()
+			build_rd_display()
+		)
+		rd_container.add_child(start_btn)
+
+	if RdManager.pity_counter > 0:
+		var pity_lbl := Label.new()
+		pity_lbl.text = "Pity: %d/%d" % [RdManager.pity_counter, RdManager.PITY_THRESHOLD]
+		rd_container.add_child(pity_lbl)

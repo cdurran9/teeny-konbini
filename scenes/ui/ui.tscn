@@ -51,3 +51,10 @@ offset_left = 320.0
 offset_top = 300.0
 offset_right = 640.0
 offset_bottom = 700.0
+
+[node name="RdContainer" type="VBoxContainer" parent="." unique_id=555666777]
+layout_mode = 0
+offset_left = 660.0
+offset_top = 300.0
+offset_right = 980.0
+offset_bottom = 700.0
