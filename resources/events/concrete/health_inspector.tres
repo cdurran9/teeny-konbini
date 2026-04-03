@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://resources/upgrades/effect.gd" id="1_effect"]
+[ext_resource type="Script" path="res://resources/upgrades/effects/modify_context_stat_effect.gd" id="2_modstat"]
+[ext_resource type="Script" path="res://resources/events/event_def.gd" id="3_eventdef"]
+[ext_resource type="Script" path="res://resources/events/event_choice.gd" id="4_eventchoice"]
+
+[sub_resource type="Resource" id="Effect_price_dip"]
+script = ExtResource("2_modstat")
+stat_name = "price_modifier"
+multiplier = 0.8
+
+[sub_resource type="Resource" id="Effect_clean_penalty"]
+script = ExtResource("2_modstat")
+stat_name = "cleanliness"
+multiplier = 0.7
+
+[sub_resource type="Resource" id="Effect_clean_boost"]
+script = ExtResource("2_modstat")
+stat_name = "cleanliness"
+multiplier = 1.3
+
+[sub_resource type="Resource" id="Choice_comply"]
+script = ExtResource("4_eventchoice")
+label = "Comply"
+description = "Temporary revenue hit but lasting cleanliness improvement"
+effects = Array[ExtResource("1_effect")]([SubResource("Effect_price_dip"), SubResource("Effect_clean_boost")])
+duration_ticks = -1
+
+[sub_resource type="Resource" id="Choice_ignore"]
+script = ExtResource("4_eventchoice")
+label = "Ignore"
+description = "Shrug it off. Permanent mark on your cleanliness record"
+effects = Array[ExtResource("1_effect")]([SubResource("Effect_clean_penalty")])
+duration_ticks = -1
+
+[resource]
+script = ExtResource("3_eventdef")
+id = "health_inspector"
+display_name = "Health Inspector Visit"
+description = "A health inspector shows up unannounced. How do you handle it?"
+choices = Array[ExtResource("4_eventchoice")]([SubResource("Choice_comply"), SubResource("Choice_ignore")])

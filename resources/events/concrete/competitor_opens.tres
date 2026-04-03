@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://resources/upgrades/effect.gd" id="1_effect"]
+[ext_resource type="Script" path="res://resources/upgrades/effects/modify_context_stat_effect.gd" id="2_modstat"]
+[ext_resource type="Script" path="res://resources/events/event_def.gd" id="3_eventdef"]
+[ext_resource type="Script" path="res://resources/events/event_choice.gd" id="4_eventchoice"]
+
+[sub_resource type="Resource" id="Effect_price_cut"]
+script = ExtResource("2_modstat")
+stat_name = "price_modifier"
+multiplier = 0.85
+
+[sub_resource type="Resource" id="Effect_traffic_loss"]
+script = ExtResource("2_modstat")
+stat_name = "traffic_multiplier"
+multiplier = 0.85
+
+[sub_resource type="Resource" id="Choice_price_match"]
+script = ExtResource("4_eventchoice")
+label = "Price match"
+description = "Lower margins to keep customers loyal"
+effects = Array[ExtResource("1_effect")]([SubResource("Effect_price_cut")])
+duration_ticks = 10
+
+[sub_resource type="Resource" id="Choice_ignore"]
+script = ExtResource("4_eventchoice")
+label = "Hold your ground"
+description = "Don't budge. Some customers defect."
+effects = Array[ExtResource("1_effect")]([SubResource("Effect_traffic_loss")])
+duration_ticks = 10
+
+[resource]
+script = ExtResource("3_eventdef")
+id = "competitor_opens"
+display_name = "Competitor Opens Nearby"
+description = "A rival convenience store just opened two blocks away."
+choices = Array[ExtResource("4_eventchoice")]([SubResource("Choice_price_match"), SubResource("Choice_ignore")])

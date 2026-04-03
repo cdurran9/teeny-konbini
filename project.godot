@@ -23,6 +23,7 @@ GameState="*uid://smsm7mh0mfj8"
 UpgradeRegistry="*uid://do5ap4ey5ggbk"
 StaffManager="*res://scripts/autoloads/staff_manager.gd"
 RdManager="*res://scripts/autoloads/rd_manager.gd"
+EventManager="*res://scripts/autoloads/event_manager.gd"
 
 [editor_plugins]
 

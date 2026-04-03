@@ -32,6 +32,9 @@ static func calculate() -> Dictionary:
 					for effect in trait_def.effects:
 						effect.apply(context)
 
+		# apply active event modifiers
+		EventManager.apply_active_effects(context)
+
 		# then apply upgrade effects on top
 		for upgrade_id in GameState.owned_upgrades:
 			var def: UpgradeDef = UpgradeRegistry._upgrades[upgrade_id]

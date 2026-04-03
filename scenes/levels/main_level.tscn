@@ -2,9 +2,12 @@
 
 [ext_resource type="PackedScene" uid="uid://ckqecw60ic35e" path="res://scenes/ui/ui.tscn" id="1_lx3qq"]
 [ext_resource type="PackedScene" path="res://scenes/ui/brand_picker.tscn" id="2_picker"]
+[ext_resource type="PackedScene" path="res://scenes/ui/event_popup.tscn" id="3_evpopup"]
 
 [node name="Main Level" type="Node2D" unique_id=1050061569]
 
 [node name="Control" parent="." unique_id=1635031077 instance=ExtResource("1_lx3qq")]
 
 [node name="BrandPicker" parent="." instance=ExtResource("2_picker")]
+
+[node name="EventPopup" parent="." instance=ExtResource("3_evpopup")]
