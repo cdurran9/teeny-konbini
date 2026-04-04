@@ -48,6 +48,16 @@ func purchase_upgrade(id: String):
 func purchase_product(id: String):
 	if UpgradeRegistry._products.get(id) and not owned_products.has(id):
 		owned_products.append(id)
+		EventBus.product_purchased.emit(id)
+
+func apply_product_upgrade(product_id: String):
+	var new_level: int = product_upgrades.get(product_id, 0) + 1
+	product_upgrades[product_id] = new_level
+	EventBus.product_upgraded.emit(product_id, new_level)
+
+func choose_brand(brand_id: String):
+	brand_identity_id = brand_id
+	EventBus.brand_chosen.emit(brand_id)
 
 func open_store(location_id: String):
 	var location: LocationDef = UpgradeRegistry._locations.get(location_id)

@@ -11,5 +11,7 @@ signal staff_quit(staff_data: Dictionary)
 signal research_completed(choices: Array)
 signal event_triggered(event_def)
 signal event_resolved(choice)
+signal product_purchased(product_id: String)
+signal product_upgraded(product_id: String, new_level: int)
 signal prestige_available
 signal prestige_completed

@@ -58,9 +58,7 @@ func _apply_choice(choice: Dictionary):
 		"unlock_product":
 			GameState.purchase_product(choice["id"])
 		"upgrade_product":
-			var pid: String = choice["id"]
-			var current_level: int = GameState.product_upgrades.get(pid, 0)
-			GameState.product_upgrades[pid] = current_level + 1
+			GameState.apply_product_upgrade(choice["id"])
 
 func _build_pool() -> Array[Dictionary]:
 	var pool: Array[Dictionary] = []

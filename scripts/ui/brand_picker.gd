@@ -26,6 +26,5 @@ func _ready():
 		vbox.add_child(btn)
 
 func _choose(brand_id: String):
-	GameState.brand_identity_id = brand_id
-	EventBus.brand_chosen.emit(brand_id)
+	GameState.choose_brand(brand_id)
 	queue_free()
