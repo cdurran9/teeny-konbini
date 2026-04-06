@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ProductDefinition" format=3 uid="uid://c2yrnv4oaq9d"]
+[gd_resource type="Resource" script_class="ProductDefinition" format=3 uid="uid://c2yrnv4oarad"]
 
 [ext_resource type="Script" uid="uid://cepgvmp2tmrkd" path="res://resources/products/product_definition.gd" id="1_chips"]
 
