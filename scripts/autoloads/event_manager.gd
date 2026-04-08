@@ -7,7 +7,9 @@ const MAX_EVENT_INTERVAL := 40
 var _event_pool: Array = []
 var _active_modifiers: Array[Dictionary] = []
 var _ticks_until_next_event: int = 0
-var _pending_event = null  # EventDef awaiting player resolution
+var _pending_event = null # EventDef awaiting player resolution
+
+@export var enabled := true
 
 func _ready():
 	EventBus.tick_processed.connect(_on_tick)
@@ -44,7 +46,7 @@ func _on_tick(_tick: Dictionary):
 	if _pending_event != null:
 		return
 	_ticks_until_next_event -= 1
-	if _ticks_until_next_event <= 0:
+	if _ticks_until_next_event <= 0 and enabled:
 		_trigger_random_event()
 
 func _tick_down_modifiers():
@@ -85,4 +87,6 @@ func apply_active_effects(context: TickContext):
 			effect.apply(context)
 
 func _schedule_next_event():
+	if not enabled:
+		return
 	_ticks_until_next_event = randi_range(MIN_EVENT_INTERVAL, MAX_EVENT_INTERVAL)

@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://deh13n57ydllx"]
+
+[ext_resource type="Script" uid="uid://dpfxqmaki4eau" path="res://scripts/autoloads/event_manager.gd" id="1_35j2f"]
+
+[node name="Event Manager" type="Node" unique_id=669712579]
+script = ExtResource("1_35j2f")
+enabled = false

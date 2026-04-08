@@ -5,6 +5,7 @@ const PRESTIGE_STORE_THRESHOLD := 3
 const PRESTIGE_REP_THRESHOLD := 50.0
 
 @export var starting_money := 0.0
+@export var prestige_enabled := true
 
 var current_money := 0.0
 var brand_reputation := 0.0
@@ -30,7 +31,7 @@ func _apply_tick(tick: Dictionary):
 	brand_reputation += tick.reputation_gain
 	EventBus.money_changed.emit(current_money)
 	EventBus.reputation_changed.emit(brand_reputation)
-	if not _prestige_signaled and _prestige_threshold_met():
+	if prestige_enabled and not _prestige_signaled and _prestige_threshold_met():
 		_prestige_signaled = true
 		EventBus.prestige_available.emit()
 
@@ -39,11 +40,19 @@ func _prestige_threshold_met() -> bool:
 
 func purchase_upgrade(id: String):
 	var def: UpgradeDef = UpgradeRegistry._upgrades.get(id)
-	if def and not owned_upgrades.has(id):
-		for effect in def.effects:
-			effect.on_purchase()
-		owned_upgrades.append(id)
-		EventBus.upgrade_purchased.emit(id)
+	if not def or owned_upgrades.has(id):
+		return
+	if current_money < def.base_cost:
+		return
+	for prereq in def.prerequisites:
+		if not owned_upgrades.has(prereq):
+			return
+	current_money -= def.base_cost
+	EventBus.money_changed.emit(current_money)
+	for effect in def.effects:
+		effect.on_purchase()
+	owned_upgrades.append(id)
+	EventBus.upgrade_purchased.emit(id)
 
 func purchase_product(id: String):
 	if UpgradeRegistry._products.get(id) and not owned_products.has(id):
@@ -72,6 +81,8 @@ func open_store(location_id: String):
 	EventBus.store_opened.emit(location_id)
 
 func prestige():
+	if not prestige_enabled:
+		return
 	legacy_points += 1
 	_save_legacy_points()
 	current_money = starting_money

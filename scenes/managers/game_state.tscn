@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://12m1o5dyibo3"]
+
+[ext_resource type="Script" uid="uid://smsm7mh0mfj8" path="res://scripts/autoloads/game_state.gd" id="1_m3rc4"]
+
+[node name="Game State" type="Node" unique_id=946968532]
+script = ExtResource("1_m3rc4")
+starting_money = 50.0
+prestige_enabled = false

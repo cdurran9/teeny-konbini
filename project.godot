@@ -19,11 +19,11 @@ config/icon="res://icon.svg"
 
 GameLoop="*uid://0n2i1myl4elh"
 EventBus="*uid://cwseujf22k53h"
-GameState="*uid://smsm7mh0mfj8"
 UpgradeRegistry="*uid://do5ap4ey5ggbk"
 StaffManager="*res://scripts/autoloads/staff_manager.gd"
 RdManager="*res://scripts/autoloads/rd_manager.gd"
-EventManager="*res://scripts/autoloads/event_manager.gd"
+EventManager="*uid://deh13n57ydllx"
+GameState="*uid://12m1o5dyibo3"
 
 [editor_plugins]
 
