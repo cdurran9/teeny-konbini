@@ -23,6 +23,7 @@ UpgradeRegistry="*uid://do5ap4ey5ggbk"
 StaffManager="*res://scripts/autoloads/staff_manager.gd"
 RdManager="*res://scripts/autoloads/rd_manager.gd"
 EventManager="*uid://deh13n57ydllx"
+DevConsole="*res://scripts/autoloads/dev_console.gd"
 GameState="*uid://12m1o5dyibo3"
 
 [editor_plugins]

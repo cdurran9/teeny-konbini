@@ -23,8 +23,11 @@ var _prestige_signaled := false
 func _ready():
 	_load_legacy_points()
 	current_money = starting_money
-	owned_stores = [{ "location_id": "strip_mall", "local_reputation": 1.0 }]
+	owned_stores = [ {"location_id": "strip_mall", "local_reputation": 1.0}]
 	EventBus.tick_processed.connect(_apply_tick)
+	DevConsole.register("add_money", _cmd_add_money)
+	DevConsole.register("set_money", _cmd_set_money)
+	DevConsole.register("set_rep", _cmd_set_rep)
 
 func _apply_tick(tick: Dictionary):
 	current_money += tick.income
@@ -77,7 +80,7 @@ func open_store(location_id: String):
 	for store in owned_stores:
 		if store.location_id == location_id:
 			return
-	owned_stores.append({ "location_id": location_id, "local_reputation": 1.0 })
+	owned_stores.append({"location_id": location_id, "local_reputation": 1.0})
 	EventBus.store_opened.emit(location_id)
 
 func prestige():
@@ -88,7 +91,7 @@ func prestige():
 	current_money = starting_money
 	brand_reputation = 0.0
 	brand_identity_id = ""
-	owned_stores = [{ "location_id": "strip_mall", "local_reputation": 1.0 }]
+	owned_stores = [ {"location_id": "strip_mall", "local_reputation": 1.0}]
 	owned_upgrades = []
 	owned_products = []
 	hired_staff = []
@@ -96,6 +99,30 @@ func prestige():
 	_prestige_signaled = false
 	EventBus.prestige_completed.emit()
 	get_tree().reload_current_scene()
+
+func add_money(amount: float) -> void:
+	current_money += amount
+	EventBus.money_changed.emit(current_money)
+
+func _cmd_add_money(args: PackedStringArray) -> String:
+	if args.is_empty():
+		return "Usage: add_money <amount>"
+	add_money(float(args[0]))
+	return ""
+
+func _cmd_set_money(args: PackedStringArray) -> String:
+	if args.is_empty():
+		return "Usage: set_money <amount>"
+	current_money = float(args[0])
+	EventBus.money_changed.emit(current_money)
+	return ""
+
+func _cmd_set_rep(args: PackedStringArray) -> String:
+	if args.is_empty():
+		return "Usage: set_rep <amount>"
+	brand_reputation = float(args[0])
+	EventBus.reputation_changed.emit(brand_reputation)
+	return ""
 
 func _load_legacy_points():
 	var cfg := ConfigFile.new()
